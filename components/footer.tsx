@@ -9,7 +9,7 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
-              <span className="text-2xl font-light tracking-[0.3em] text-white">
+              <span className="text-2xl font-serif font-light tracking-[0.2em] text-white">
                 VIP <span className="text-primary">CIRCLE</span>
               </span>
             </Link>

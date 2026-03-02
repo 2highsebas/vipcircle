@@ -33,7 +33,7 @@ export function HeroSection() {
 
           {/* Main Heading */}
           <div className="overflow-hidden mb-8">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-[0.1em] text-foreground uppercase animate-fade-in-up animation-delay-200">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-light tracking-[0.15em] text-foreground uppercase animate-fade-in-up animation-delay-200">
               VIP CIRCLE
             </h1>
           </div>

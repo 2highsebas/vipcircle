@@ -28,7 +28,7 @@ export function Navigation() {
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-light tracking-[0.3em] text-foreground uppercase">
+            <span className="text-2xl font-serif font-light tracking-[0.2em] text-foreground uppercase">
               VIP CIRCLE
             </span>
           </Link>
@@ -64,7 +64,7 @@ export function Navigation() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <Link
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center justify-center px-6 py-2.5 text-sm tracking-[0.1em] uppercase bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
             >
               Get in Touch
@@ -120,7 +120,7 @@ export function Navigation() {
             Contact
           </Link>
           <Link
-            href="#contact"
+            href="/contact"
             onClick={() => setIsMobileMenuOpen(false)}
             className="inline-flex items-center justify-center px-6 py-3 text-sm tracking-[0.1em] uppercase bg-primary text-primary-foreground mt-2"
           >
