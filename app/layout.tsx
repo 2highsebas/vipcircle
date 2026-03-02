@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'VIP CIRCLE | Luxury Event Company',
+  description: 'Extraordinary Events. Timeless Experiences. VIP CIRCLE specializes in corporate events and sophisticated weddings.',
   generator: 'v0.app',
   icons: {
     icon: [
