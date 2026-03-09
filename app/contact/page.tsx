@@ -34,40 +34,6 @@ export default function ContactPage() {
                 Ready to create an extraordinary event? We would love to hear from you. 
                 Share your details and our team will be in touch shortly.
               </p>
-              
-              <div className="space-y-6 pt-8">
-                <div className="space-y-2">
-                  <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
-                    Email
-                  </p>
-                  <a 
-                    href="mailto:hello@vipcircle.com" 
-                    className="text-foreground hover:text-primary transition-colors"
-                  >
-                    hello@vipcircle.com
-                  </a>
-                </div>
-                
-                <div className="space-y-2">
-                  <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
-                    Follow Us
-                  </p>
-                  <div className="flex gap-4">
-                    <a 
-                      href="#" 
-                      className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                    >
-                      Instagram
-                    </a>
-                    <a 
-                      href="#" 
-                      className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                    >
-                      LinkedIn
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
             
             {/* Right Column - Form */}

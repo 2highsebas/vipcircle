@@ -26,7 +26,7 @@ export function FounderSection() {
               {/* Main image */}
               <div className="relative w-full h-full overflow-hidden">
                 <Image
-                  src="/images/lorena-mor.png"
+                  src="/images/lorena.jpg"
                   alt="Lorena Mor - Founder and Creative Director of VIP CIRCLE"
                   fill
                   className="object-cover object-top grayscale hover:grayscale-0 transition-all duration-700"

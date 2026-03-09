@@ -36,28 +36,22 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-12">
             <Link
-              href="#about"
+              href="/#about"
               className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
             >
               About
             </Link>
             <Link
-              href="#services"
+              href="/services"
               className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
             >
               Services
             </Link>
             <Link
-              href="#portfolio"
+              href="/portfolio"
               className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
             >
               Portfolio
-            </Link>
-            <Link
-              href="#contact"
-              className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
-            >
-              Contact
             </Link>
           </div>
 
@@ -92,32 +86,25 @@ export function Navigation() {
       >
         <div className="px-6 py-8 flex flex-col gap-6">
           <Link
-            href="#about"
+            href="/#about"
             onClick={() => setIsMobileMenuOpen(false)}
             className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
           >
             About
           </Link>
           <Link
-            href="#services"
+            href="/services"
             onClick={() => setIsMobileMenuOpen(false)}
             className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
           >
             Services
           </Link>
           <Link
-            href="#portfolio"
+            href="/portfolio"
             onClick={() => setIsMobileMenuOpen(false)}
             className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
           >
             Portfolio
-          </Link>
-          <Link
-            href="#contact"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
-          >
-            Contact
           </Link>
           <Link
             href="/contact"

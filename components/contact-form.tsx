@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { supabase } from "@/lib/supabaseClient"
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -26,11 +27,34 @@ export function ContactForm() {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    
+    const { error } = await supabase.from("contact_submissions").insert([
+      {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+      },
+    ])
+
+    if (error) {
+      console.error("Error saving contact:", error)
+      alert("Something went wrong. Please try again.")
+      setIsSubmitting(false)
+      return
+    }
+
     setIsSubmitting(false)
     setIsSubmitted(true)
+    
+    // Reset form after 3 seconds
+    setTimeout(() => {
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+      })
+    }, 3000)
   }
 
   if (isSubmitted) {
