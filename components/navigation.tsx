@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Menu, X } from "lucide-react"
 
 export function Navigation() {
@@ -28,9 +29,14 @@ export function Navigation() {
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-serif font-light tracking-[0.2em] text-foreground uppercase">
-              VIP CIRCLE
-            </span>
+            <Image
+              src="/images/Vipcirle-removebg-preview.png"
+              alt="VIP Circle"
+              width={120}
+              height={48}
+              className="object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

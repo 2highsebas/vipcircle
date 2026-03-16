@@ -32,10 +32,15 @@ export function HeroSection() {
           </div>
 
           {/* Main Heading */}
-          <div className="overflow-hidden mb-8">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-light tracking-[0.15em] text-foreground uppercase animate-fade-in-up animation-delay-200">
-              VIP CIRCLE
-            </h1>
+          <div className="overflow-hidden mb-8 animate-fade-in-up animation-delay-200">
+            <Image
+              src="/images/Vipcirle-removebg-preview.png"
+              alt="VIP Circle"
+              width={400}
+              height={160}
+              className="object-contain"
+              priority
+            />
           </div>
 
           {/* Decorative Line */}
