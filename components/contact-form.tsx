@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { supabase } from "@/lib/supabaseClient"
+import { getSupabaseClient } from "@/lib/supabaseClient"
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -26,6 +26,14 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+
+    const supabase = getSupabaseClient()
+
+    if (!supabase) {
+      alert("Form is not configured yet. Please set Supabase environment variables.")
+      setIsSubmitting(false)
+      return
+    }
     
     const { error } = await supabase.from("contact_submissions").insert([
       {
