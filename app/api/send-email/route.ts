@@ -262,12 +262,34 @@ export async function POST(request: NextRequest) {
     const clientEmailFrom = process.env.RESEND_REPLY_EMAIL || "hello@vipcircle.com"
     const contactEmailTo = process.env.CONTACT_EMAIL_TO || "vipcircle47@gmail.com"
 
-    const result = await resend.emails.send({
-      from: businessEmailFrom,
+    const formatFrom = (senderEmail: string) => `VIP Circle <${senderEmail}>`
+
+    let result = await resend.emails.send({
+      from: formatFrom(businessEmailFrom),
       to: contactEmailTo,
       subject: `New Event Inquiry from ${firstName} ${lastName}`,
       html: businessEmailHtml,
+      replyTo: email,
     })
+
+    let activeSender = businessEmailFrom
+
+    if (!result.data) {
+      const resendMessage = String(result.error?.message || "")
+      const isUnverifiedDomainError =
+        result.error?.statusCode === 403 && resendMessage.includes("domain is not verified")
+
+      if (isUnverifiedDomainError) {
+        activeSender = "onboarding@resend.dev"
+        result = await resend.emails.send({
+          from: formatFrom(activeSender),
+          to: contactEmailTo,
+          subject: `New Event Inquiry from ${firstName} ${lastName}`,
+          html: businessEmailHtml,
+          replyTo: email,
+        })
+      }
+    }
 
     if (!result.data) {
       console.error("Resend API error:", result.error)
@@ -280,7 +302,7 @@ export async function POST(request: NextRequest) {
     // Send confirmation email to the user
     try {
       await resend.emails.send({
-        from: clientEmailFrom,
+        from: formatFrom(activeSender || clientEmailFrom),
         to: email,
         subject: "We Received Your Event Inquiry - VIP CIRCLE",
         html: clientEmailHtml,

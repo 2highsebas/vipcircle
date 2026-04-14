@@ -49,8 +49,8 @@ export function ContactForm() {
     ])
 
     if (error) {
-      console.error("Error saving contact:", error)
-      setErrorMessage("Failed to save your inquiry. Please try again.")
+      console.error("Supabase error details:", error)
+      setErrorMessage(`Database error: ${error.message || "Failed to save. Check RLS permissions in Supabase."}`)
       setIsSubmitting(false)
       return
     }
@@ -74,15 +74,9 @@ export function ContactForm() {
       if (!response.ok) {
         const errorData = await response.json()
         console.error("Error sending email notification", errorData)
-        setErrorMessage("Your inquiry was saved but email notification failed. Please try again.")
-        setIsSubmitting(false)
-        return
       }
     } catch (emailError) {
       console.error("Error sending email:", emailError)
-      setErrorMessage("Your inquiry was saved but email notification failed. Please try again.")
-      setIsSubmitting(false)
-      return
     }
 
     setIsSubmitting(false)
