@@ -258,8 +258,15 @@ export async function POST(request: NextRequest) {
     `
 
     // Send email to your business email
-    const businessEmailFrom = process.env.RESEND_FROM_EMAIL || "noreply@vipcircle.com"
-    const clientEmailFrom = process.env.RESEND_REPLY_EMAIL || "hello@vipcircle.com"
+    const normalizeSenderDomain = (value: string) =>
+      value.replace("@vipcircle.com", "@vipcircle.co")
+
+    const businessEmailFrom = normalizeSenderDomain(
+      process.env.RESEND_FROM_EMAIL || "noreply@vipcircle.co"
+    )
+    const clientEmailFrom = normalizeSenderDomain(
+      process.env.RESEND_REPLY_EMAIL || "hello@vipcircle.co"
+    )
     const contactEmailTo = process.env.CONTACT_EMAIL_TO || "vipcircle47@gmail.com"
 
     const formatFrom = (senderEmail: string) => `VIP Circle <${senderEmail}>`
@@ -277,7 +284,9 @@ export async function POST(request: NextRequest) {
     if (!result.data) {
       const resendMessage = String(result.error?.message || "")
       const isUnverifiedDomainError =
-        result.error?.statusCode === 403 && resendMessage.includes("domain is not verified")
+        result.error?.statusCode === 403 &&
+        (resendMessage.includes("domain is not verified") ||
+          resendMessage.includes("change the `from` address to an email using this domain"))
 
       if (isUnverifiedDomainError) {
         activeSender = "onboarding@resend.dev"
