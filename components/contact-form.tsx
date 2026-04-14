@@ -14,9 +14,10 @@ export function ContactForm() {
     lastName: "",
     email: "",
     phone: "",
+    eventDescription: "",
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -41,6 +42,7 @@ export function ContactForm() {
         last_name: formData.lastName,
         email: formData.email,
         phone: formData.phone,
+        event_description: formData.eventDescription,
       },
     ])
 
@@ -49,6 +51,29 @@ export function ContactForm() {
       alert("Something went wrong. Please try again.")
       setIsSubmitting(false)
       return
+    }
+
+    // Send email notification via Resend
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          eventDescription: formData.eventDescription,
+        }),
+      })
+
+      if (!response.ok) {
+        console.error("Error sending email notification")
+      }
+    } catch (emailError) {
+      console.error("Error sending email:", emailError)
     }
 
     setIsSubmitting(false)
@@ -61,6 +86,7 @@ export function ContactForm() {
         lastName: "",
         email: "",
         phone: "",
+        eventDescription: "",
       })
     }, 3000)
   }
@@ -168,6 +194,24 @@ export function ContactForm() {
           onChange={handleChange}
           className="bg-background border-border focus:border-primary focus:ring-primary h-12 rounded-none"
           placeholder="Enter your phone number"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label 
+          htmlFor="eventDescription" 
+          className="text-xs tracking-[0.2em] uppercase text-muted-foreground"
+        >
+          Event Description
+        </Label>
+        <textarea
+          id="eventDescription"
+          name="eventDescription"
+          required
+          value={formData.eventDescription}
+          onChange={handleChange}
+          className="w-full p-4 bg-background border border-border focus:border-primary focus:outline-none rounded-none min-h-[120px] text-foreground placeholder:text-muted-foreground resize-none"
+          placeholder="Tell us about your event... (type of event, date, guest count, vision, etc.)"
         />
       </div>
       
