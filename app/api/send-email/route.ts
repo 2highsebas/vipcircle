@@ -258,21 +258,36 @@ export async function POST(request: NextRequest) {
     `
 
     // Send email to your business email
+    const businessEmailFrom = process.env.RESEND_FROM_EMAIL || "noreply@vipcircle.com"
+    const clientEmailFrom = process.env.RESEND_REPLY_EMAIL || "hello@vipcircle.com"
+    const contactEmailTo = process.env.CONTACT_EMAIL_TO || "vipcircle47@gmail.com"
+
     const result = await resend.emails.send({
-      from: "VIP Circle <noreply@vipcircle.com>",
-      to: process.env.CONTACT_EMAIL_TO || "vipcircle47@gmail.com",
+      from: businessEmailFrom,
+      to: contactEmailTo,
       subject: `New Event Inquiry from ${firstName} ${lastName}`,
       html: businessEmailHtml,
     })
 
+    if (!result.data) {
+      console.error("Resend API error:", result.error)
+      return NextResponse.json(
+        { error: "Failed to send email notification", details: result.error },
+        { status: 500 }
+      )
+    }
+
     // Send confirmation email to the user
-    if (result.data) {
+    try {
       await resend.emails.send({
-        from: "VIP Circle <hello@vipcircle.com>",
+        from: clientEmailFrom,
         to: email,
         subject: "We Received Your Event Inquiry - VIP CIRCLE",
         html: clientEmailHtml,
       })
+    } catch (confirmationError) {
+      console.error("Error sending confirmation email:", confirmationError)
+      // Don't fail the request if confirmation email fails - notification was sent
     }
 
     return NextResponse.json(
@@ -282,7 +297,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Error sending email:", error)
     return NextResponse.json(
-      { error: "Failed to send email" },
+      { error: "Failed to send email", details: String(error) },
       { status: 500 }
     )
   }

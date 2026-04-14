@@ -9,6 +9,7 @@ import { getSupabaseClient } from "@/lib/supabaseClient"
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,11 +28,12 @@ export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setErrorMessage("")
 
     const supabase = getSupabaseClient()
 
     if (!supabase) {
-      alert("Form is not configured yet. Please set Supabase environment variables.")
+      setErrorMessage("Form is not configured yet. Please set Supabase environment variables.")
       setIsSubmitting(false)
       return
     }
@@ -48,7 +50,7 @@ export function ContactForm() {
 
     if (error) {
       console.error("Error saving contact:", error)
-      alert("Something went wrong. Please try again.")
+      setErrorMessage("Failed to save your inquiry. Please try again.")
       setIsSubmitting(false)
       return
     }
@@ -70,10 +72,17 @@ export function ContactForm() {
       })
 
       if (!response.ok) {
-        console.error("Error sending email notification")
+        const errorData = await response.json()
+        console.error("Error sending email notification", errorData)
+        setErrorMessage("Your inquiry was saved but email notification failed. Please try again.")
+        setIsSubmitting(false)
+        return
       }
     } catch (emailError) {
       console.error("Error sending email:", emailError)
+      setErrorMessage("Your inquiry was saved but email notification failed. Please try again.")
+      setIsSubmitting(false)
+      return
     }
 
     setIsSubmitting(false)
@@ -94,24 +103,22 @@ export function ContactForm() {
   if (isSubmitted) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
-        <div className="w-16 h-16 border border-primary flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full bg-green-100 border-2 border-green-500 flex items-center justify-center animate-in">
           <svg
-            className="w-8 h-8 text-primary"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+            className="w-8 h-8 text-green-600"
+            fill="currentColor"
+            viewBox="0 0 20 20"
           >
             <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M5 13l4 4L19 7"
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clipRule="evenodd"
             />
           </svg>
         </div>
-        <h3 className="text-2xl font-light tracking-tight">Thank You</h3>
+        <h3 className="text-2xl font-light tracking-tight text-green-600">Confirmed!</h3>
         <p className="text-muted-foreground max-w-sm">
-          Your message has been received. We will be in touch with you shortly.
+          Thank you! Your inquiry has been received. Our team will be in touch shortly to discuss your event.
         </p>
       </div>
     )
@@ -119,6 +126,11 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      {errorMessage && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+          {errorMessage}
+        </div>
+      )}
       <div className="grid sm:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label 
