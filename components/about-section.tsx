@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 
 export function AboutSection() {
   return (
@@ -68,6 +69,36 @@ export function AboutSection() {
               <h3 className="text-lg tracking-[0.1em] uppercase text-foreground mb-3">Elegance</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Sophisticated design and timeless aesthetics in every event.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Orlando Chamber of Commerce Section */}
+        <div className="mt-24 pt-16 border-t border-border">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="flex justify-center lg:justify-start">
+              <Image
+                src="/images/orladnologo.PNG"
+                alt="Orlando Chamber of Commerce"
+                width={300}
+                height={200}
+                className="object-contain"
+              />
+            </div>
+            <div className="space-y-6">
+              <h3 className="text-3xl md:text-4xl font-light tracking-tight text-foreground">
+                Community & Partnerships
+              </h3>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Lorena Morales is a proud member of the Orlando Chamber of Commerce, 
+                connecting with the vibrant business community and leading the way in 
+                luxury event planning and corporate entertainment in Central Florida.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Our commitment to excellence extends beyond events — we're invested in 
+                building meaningful relationships within our community and supporting 
+                local businesses and entrepreneurship.
               </p>
             </div>
           </div>

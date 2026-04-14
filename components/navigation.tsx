@@ -27,20 +27,19 @@ export function Navigation() {
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/images/Vipcirle-removebg-preview.png"
-              alt="VIP Circle"
-              width={120}
-              height={48}
-              className="object-contain"
-              priority
-            />
-          </Link>
+          {/* VIP Circle Brand */}
+          <div className="text-lg font-serif font-light tracking-[0.2em] text-foreground uppercase">
+            VIP CIRCLE
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-12">
+            <Link
+              href="/"
+              className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
+            >
+              Home
+            </Link>
             <Link
               href="/#about"
               className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
@@ -91,6 +90,13 @@ export function Navigation() {
         }`}
       >
         <div className="px-6 py-8 flex flex-col gap-6">
+          <Link
+            href="/"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="text-sm tracking-[0.15em] text-muted-foreground hover:text-foreground transition-colors uppercase"
+          >
+            Home
+          </Link>
           <Link
             href="/#about"
             onClick={() => setIsMobileMenuOpen(false)}
