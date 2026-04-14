@@ -16,34 +16,262 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Email template for business notification
+    const businessEmailHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+              line-height: 1.6;
+              color: #333;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 40px 20px;
+              background-color: #f9f9f9;
+            }
+            .header {
+              background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+              color: white;
+              padding: 40px 20px;
+              text-align: center;
+              margin-bottom: 30px;
+            }
+            .header h1 {
+              margin: 0;
+              font-size: 28px;
+              font-weight: 300;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+            }
+            .content {
+              background-color: white;
+              padding: 30px;
+              border: 1px solid #e0e0e0;
+            }
+            .section {
+              margin-bottom: 25px;
+            }
+            .section-title {
+              font-weight: 600;
+              color: #d4af37;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              font-size: 12px;
+              margin-bottom: 10px;
+            }
+            .field {
+              margin-bottom: 15px;
+            }
+            .field-label {
+              font-weight: 600;
+              color: #666;
+              font-size: 13px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+            .field-value {
+              color: #333;
+              margin-top: 5px;
+              padding-left: 15px;
+              border-left: 3px solid #d4af37;
+            }
+            .event-description {
+              background-color: #f5f5f5;
+              padding: 15px;
+              border-left: 4px solid #d4af37;
+              margin-top: 5px;
+              white-space: pre-wrap;
+              word-wrap: break-word;
+            }
+            .footer {
+              text-align: center;
+              padding-top: 30px;
+              border-top: 1px solid #e0e0e0;
+              font-size: 12px;
+              color: #999;
+              margin-top: 30px;
+            }
+            .cta-section {
+              background-color: #f0f0f0;
+              padding: 20px;
+              text-align: center;
+              margin-top: 30px;
+            }
+            .cta-section p {
+              color: #666;
+              margin: 0;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>New Event Inquiry</h1>
+            </div>
+            
+            <div class="content">
+              <div class="section">
+                <div class="section-title">Contact Information</div>
+                
+                <div class="field">
+                  <div class="field-label">Name</div>
+                  <div class="field-value">${firstName} ${lastName}</div>
+                </div>
+                
+                <div class="field">
+                  <div class="field-label">Email Address</div>
+                  <div class="field-value">
+                    <a href="mailto:${email}" style="color: #d4af37; text-decoration: none;">${email}</a>
+                  </div>
+                </div>
+                
+                <div class="field">
+                  <div class="field-label">Phone Number</div>
+                  <div class="field-value">
+                    <a href="tel:${phone}" style="color: #d4af37; text-decoration: none;">${phone}</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="section">
+                <div class="section-title">Event Details</div>
+                <div class="field">
+                  <div class="field-label">Event Description</div>
+                  <div class="event-description">${eventDescription}</div>
+                </div>
+              </div>
+              
+              <div class="cta-section">
+                <p>This inquiry requires your attention. Please reach out to ${firstName} as soon as possible to discuss their event vision.</p>
+              </div>
+              
+              <div class="footer">
+                <p>This is an automated message from VIP CIRCLE contact form. © ${new Date().getFullYear()} VIP CIRCLE. All rights reserved.</p>
+              </div>
+            </div>
+          </div>
+        </body>
+      </html>
+    `
+
+    // Email template for client confirmation
+    const clientEmailHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+              line-height: 1.6;
+              color: #333;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 40px 20px;
+              background-color: #f9f9f9;
+            }
+            .header {
+              background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+              color: white;
+              padding: 40px 20px;
+              text-align: center;
+              margin-bottom: 30px;
+            }
+            .header h1 {
+              margin: 0;
+              font-size: 28px;
+              font-weight: 300;
+              letter-spacing: 2px;
+              text-transform: uppercase;
+            }
+            .content {
+              background-color: white;
+              padding: 30px;
+              border: 1px solid #e0e0e0;
+            }
+            .greeting {
+              font-size: 16px;
+              margin-bottom: 20px;
+            }
+            .message {
+              margin: 20px 0;
+              line-height: 1.8;
+            }
+            .highlight {
+              color: #d4af37;
+              font-weight: 600;
+            }
+            .footer {
+              text-align: center;
+              padding-top: 30px;
+              border-top: 1px solid #e0e0e0;
+              font-size: 12px;
+              color: #999;
+              margin-top: 30px;
+            }
+            .signature {
+              margin-top: 30px;
+              font-size: 14px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Thank You, ${firstName}!</h1>
+            </div>
+            
+            <div class="content">
+              <p class="greeting">Dear ${firstName},</p>
+              
+              <div class="message">
+                <p>Thank you for reaching out to <span class="highlight">VIP CIRCLE</span>. We've received your event inquiry and are excited to learn more about your vision.</p>
+              </div>
+              
+              <div class="message">
+                <p>Our team is reviewing your event details and will contact you shortly to discuss how we can bring your extraordinary event to life. We're committed to creating an experience that reflects your unique style and exceeds your expectations.</p>
+              </div>
+              
+              <div class="message">
+                <p><strong>What's Next:</strong></p>
+                <p>One of our event specialists will reach out within 24-48 hours to schedule a consultation call. In the meantime, if you have any additional details or questions, feel free to reply to this email.</p>
+              </div>
+              
+              <div class="signature">
+                <p>Best regards,</p>
+                <p><span class="highlight">The VIP CIRCLE Team</span></p>
+                <p style="font-size: 12px; color: #999; margin-top: 10px;">Creating Extraordinary Experiences</p>
+              </div>
+              
+              <div class="footer">
+                <p>© ${new Date().getFullYear()} VIP CIRCLE. All rights reserved.</p>
+              </div>
+            </div>
+          </div>
+        </body>
+      </html>
+    `
+
     // Send email to your business email
     const result = await resend.emails.send({
-      from: "VIP Circle Contact <noreply@resend.dev>",
-      to: process.env.CONTACT_EMAIL_TO || "your-email@example.com",
-      subject: `New Contact Form Submission from ${firstName} ${lastName}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <h3>Event Description:</h3>
-        <p>${eventDescription.replace(/\n/g, "<br>")}</p>
-      `,
+      from: "VIP Circle <noreply@vipcircle.com>",
+      to: process.env.CONTACT_EMAIL_TO || "vipcircle47@gmail.com",
+      subject: `New Event Inquiry from ${firstName} ${lastName}`,
+      html: businessEmailHtml,
     })
 
-    // Optionally send confirmation email to the user
+    // Send confirmation email to the user
     if (result.data) {
       await resend.emails.send({
-        from: "VIP Circle <noreply@resend.dev>",
+        from: "VIP Circle <hello@vipcircle.com>",
         to: email,
-        subject: "We received your inquiry - VIP Circle",
-        html: `
-          <h2>Thank you, ${firstName}!</h2>
-          <p>We've received your event inquiry and will be in touch shortly to discuss your vision.</p>
-          <p>Our team will review your event details and reach out to you as soon as possible.</p>
-          <br>
-          <p>Best regards,<br>The VIP Circle Team</p>
-        `,
+        subject: "We Received Your Event Inquiry - VIP CIRCLE",
+        html: clientEmailHtml,
       })
     }
 
