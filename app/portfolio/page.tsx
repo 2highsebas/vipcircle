@@ -331,6 +331,47 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* Sponsors & Partnerships */}
+      <section className="py-24 bg-background">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mb-20 text-center">
+            <p className="text-sm tracking-[0.3em] text-primary uppercase mb-4">
+              Partnerships
+            </p>
+            <h2 className="text-4xl md:text-5xl font-light tracking-tight">
+              Community & Sponsors
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div className="flex justify-center">
+              <Image
+                src="/images/orladnologo.PNG"
+                alt="Orlando Chamber of Commerce"
+                width={300}
+                height={200}
+                className="object-contain"
+              />
+            </div>
+            <div className="space-y-6">
+              <h3 className="text-2xl md:text-3xl font-light tracking-tight">
+                Orlando Chamber of Commerce
+              </h3>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Lorena Morales is a proud member and supporter of the Orlando Chamber of Commerce, 
+                actively engaging with Central Florida's vibrant business community. This partnership 
+                reflects our commitment to local entrepreneurship and excellence in the event industry.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                As a member, we collaborate with leading businesses and professionals to elevate 
+                the standards of luxury event planning in the region while fostering meaningful 
+                connections within our community.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-24 bg-card/50">
         <div className="mx-auto max-w-4xl px-6 lg:px-8 text-center">
