@@ -32,7 +32,7 @@ export default function ContactPage() {
               
               <p className="text-lg text-muted-foreground leading-relaxed max-w-md">
                 Ready to create an extraordinary event? We would love to hear from you. 
-                Share your details and our team will be in touch shortly.
+                Share your details, tell us about your vision, and select any venues that interest you.
               </p>
             </div>
             

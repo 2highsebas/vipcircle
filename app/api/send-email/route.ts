@@ -5,8 +5,18 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
-    const { firstName, lastName, email, phone, eventDescription } =
+    const { firstName, lastName, email, phone, eventDescription, interestedVenues } =
       await request.json()
+
+    const selectedVenues = Array.isArray(interestedVenues)
+      ? interestedVenues.filter((venue) => typeof venue === "string" && venue.trim().length > 0)
+      : []
+
+    const selectedVenuesMarkup = selectedVenues.length
+      ? `<ul style="margin: 10px 0 0; padding-left: 20px; color: #333;">${selectedVenues
+          .map((venue) => `<li style="margin-bottom: 6px;">${venue}</li>`)
+          .join("")}</ul>`
+      : '<div class="field-value">No specific venue selected</div>'
 
     // Validate required fields
     if (!firstName || !lastName || !email || !phone || !eventDescription) {
@@ -140,6 +150,10 @@ export async function POST(request: NextRequest) {
               <div class="section">
                 <div class="section-title">Event Details</div>
                 <div class="field">
+                  <div class="field-label">Venues of Interest</div>
+                  ${selectedVenuesMarkup}
+                </div>
+                <div class="field">
                   <div class="field-label">Event Description</div>
                   <div class="event-description">${eventDescription}</div>
                 </div>
@@ -235,6 +249,10 @@ export async function POST(request: NextRequest) {
               
               <div class="message">
                 <p>Our team is reviewing your event details and will contact you shortly to discuss how we can bring your extraordinary event to life. We're committed to creating an experience that reflects your unique style and exceeds your expectations.</p>
+              </div>
+
+              <div class="message">
+                <p><strong>Venues You Selected:</strong> ${selectedVenues.length ? selectedVenues.join(", ") : "No specific venue selected yet."}</p>
               </div>
               
               <div class="message">

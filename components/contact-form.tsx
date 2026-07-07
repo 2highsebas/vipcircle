@@ -2,9 +2,13 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { venues } from "@/lib/venues"
 import { getSupabaseClient } from "@/lib/supabaseClient"
+
+const venueOptions = venues.map((venue) => venue.name)
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -16,6 +20,7 @@ export function ContactForm() {
     email: "",
     phone: "",
     eventDescription: "",
+    interestedVenues: [] as string[],
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -25,10 +30,25 @@ export function ContactForm() {
     }))
   }
 
+  const handleVenueToggle = (venue: string, checked: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      interestedVenues: checked
+        ? [...prev.interestedVenues, venue]
+        : prev.interestedVenues.filter((item) => item !== venue),
+    }))
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     setErrorMessage("")
+
+    const selectedVenuesText = formData.interestedVenues.length
+      ? formData.interestedVenues.join(", ")
+      : "No specific venue selected"
+
+    const eventDescriptionWithVenues = `${formData.eventDescription}\n\nInterested Venues: ${selectedVenuesText}`
 
     const supabase = getSupabaseClient()
 
@@ -44,7 +64,7 @@ export function ContactForm() {
         last_name: formData.lastName,
         email: formData.email,
         phone: formData.phone,
-        event_description: formData.eventDescription,
+        event_description: eventDescriptionWithVenues,
       },
     ])
 
@@ -68,6 +88,7 @@ export function ContactForm() {
           email: formData.email,
           phone: formData.phone,
           eventDescription: formData.eventDescription,
+          interestedVenues: formData.interestedVenues,
         }),
       })
 
@@ -90,6 +111,7 @@ export function ContactForm() {
         email: "",
         phone: "",
         eventDescription: "",
+        interestedVenues: [],
       })
     }, 3000)
   }
@@ -219,6 +241,39 @@ export function ContactForm() {
           className="w-full p-4 bg-background border border-border focus:border-primary focus:outline-none rounded-none min-h-[120px] text-foreground placeholder:text-muted-foreground resize-none"
           placeholder="Tell us about your event... (type of event, date, guest count, vision, etc.)"
         />
+      </div>
+
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Label className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
+            Venues of Interest
+          </Label>
+          <p className="text-sm text-muted-foreground">
+            Select any venues you would like to explore for your event.
+          </p>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          {venueOptions.map((venue) => {
+            const checkboxId = `venue-${venue.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`
+
+            return (
+              <label
+                key={venue}
+                htmlFor={checkboxId}
+                className="flex cursor-pointer items-start gap-3 border border-border bg-background px-4 py-3 transition-colors hover:border-primary/50"
+              >
+                <Checkbox
+                  id={checkboxId}
+                  checked={formData.interestedVenues.includes(venue)}
+                  onCheckedChange={(checked) => handleVenueToggle(venue, checked === true)}
+                  className="mt-0.5"
+                />
+                <span className="text-sm leading-relaxed text-foreground/85">{venue}</span>
+              </label>
+            )
+          })}
+        </div>
       </div>
       
       <Button

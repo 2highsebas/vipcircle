@@ -1,6 +1,8 @@
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
-import { ArrowRight, Calendar, Sparkles, Users, Palette, MapPin, Music } from "lucide-react"
+import { ArrowRight, Calendar, ChevronDown, Sparkles, Users, Palette, MapPin, Music } from "lucide-react"
+import { venues } from "@/lib/venues"
+import { createVenueArtwork } from "@/lib/venue-artwork"
 
 export const metadata = {
   title: "Our Services | VIP CIRCLE",
@@ -231,6 +233,112 @@ export default function ServicesPage() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* Venues Section */}
+      <section className="py-24 bg-card/40 border-y border-border/60">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="max-w-4xl mb-16">
+            <p className="text-sm tracking-[0.3em] text-primary uppercase mb-4">
+              Venue Partners
+            </p>
+            <h2 className="text-4xl md:text-5xl font-light tracking-tight mb-8">
+              Venues We&apos;ve Worked With
+            </h2>
+            <div className="w-16 h-px bg-primary mb-8" />
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              At VIP Circle by Lorena Mor, we are proud to have curated memorable experiences at
+              some of Central Florida&apos;s most distinguished venues. From luxury resorts and
+              private country clubs to cultural landmarks and historic estates, each location has
+              provided a unique setting for meaningful connections, celebrations, and exceptional
+              events. Hover over each venue to reveal it in full color.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            {venues.map((venue) => (
+              <article
+                key={venue.name}
+                className="group overflow-hidden border border-border bg-background/80 transition-all duration-500 hover:-translate-y-1 hover:border-primary/50"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                    style={{ backgroundImage: createVenueArtwork(venue) }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/15 to-transparent transition-opacity duration-500 group-hover:opacity-70" />
+                  <div className="absolute left-5 top-5 border border-white/20 bg-black/20 px-3 py-1 text-[10px] tracking-[0.3em] uppercase text-white/80 backdrop-blur-sm">
+                    Featured Venue
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <p className="text-[11px] tracking-[0.3em] uppercase text-primary/90 mb-3">
+                      {venue.location}
+                    </p>
+                    <h3 className="text-2xl font-light tracking-wide text-white max-w-sm">
+                      {venue.name}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {venue.description}
+                  </p>
+
+                  <details className="group/details mt-5 border-t border-border/70 pt-5">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm tracking-[0.2em] uppercase text-primary [&::-webkit-details-marker]:hidden">
+                      <span>View Venue Details</span>
+                      <ChevronDown className="h-4 w-4 transition-transform duration-300 group-open/details:rotate-180" />
+                    </summary>
+
+                    <div className="mt-5 space-y-5 text-sm text-muted-foreground">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <p className="mb-2 text-[11px] tracking-[0.28em] uppercase text-primary/90">
+                            Venue Type
+                          </p>
+                          <p className="leading-relaxed text-foreground/85">{venue.venueType}</p>
+                        </div>
+                        <div>
+                          <p className="mb-2 text-[11px] tracking-[0.28em] uppercase text-primary/90">
+                            Best For
+                          </p>
+                          <p className="leading-relaxed text-foreground/85">{venue.bestFor}</p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p className="mb-2 text-[11px] tracking-[0.28em] uppercase text-primary/90">
+                          Atmosphere
+                        </p>
+                        <p className="leading-relaxed text-foreground/85">{venue.atmosphere}</p>
+                      </div>
+
+                      <div>
+                        <p className="mb-3 text-[11px] tracking-[0.28em] uppercase text-primary/90">
+                          Highlights
+                        </p>
+                        <ul className="space-y-2">
+                          {venue.highlights.map((highlight) => (
+                            <li key={highlight} className="flex items-start gap-3">
+                              <ArrowRight className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                              <span>{highlight}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </details>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <p className="mt-10 max-w-4xl text-sm text-muted-foreground leading-relaxed">
+            The VIP Circle continues to collaborate with exceptional venues that share our
+            commitment to excellence, hospitality, and creating meaningful experiences.
+          </p>
         </div>
       </section>
 
